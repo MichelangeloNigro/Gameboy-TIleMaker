@@ -1,12 +1,19 @@
 import tkinter as tk
 from tkinter import messagebox
 import copy
+from PIL import ImageGrab, Image, ImageTk
+import os
+from screeninfo import get_monitors
+
+
 
 box_colors = ["#FEFEFE", "#C0C0C0", "#404040", "#000000"]  # white, light grey, grey, black
 palette = []
 currTile = []
 tileSet= []
+tileMap=[]
 currTileIndex=0
+grid_frame=None
 selectedColor = 0  # Default selected color
 
 #   ld a, %11100100
@@ -71,8 +78,13 @@ class App(tk.Tk):
         super().__init__()
         self.title("Tkinter Grid Layout")
         self.geometry("900x600")  # Adjust as needed
-
         # === Navigation Panel (Left Side) ===
+        # Get the primary monitor's height from the monitor list
+        primary_monitor = get_monitors()[0]  # Assuming the first monitor is the primary monitor
+
+        # Set the window's height to the primary monitor's height
+        self.geometry(f"{int(primary_monitor.width/2)}x{int(primary_monitor.height/2)}")  # width and height based on the primary monitor
+
         self.nav_frame = tk.Frame(self, width=150, bg="gray")
         self.nav_frame.pack(side="left", fill="y")
 
@@ -82,14 +94,8 @@ class App(tk.Tk):
 
         # Initialize First View
         self.create_first_view()
-        self.bind("<space>", self.on_spacebar_press)
         self.bind("<B1-Motion>", self.dragTile)
 
-    def on_spacebar_press(self, event):
-        if self.checkTileComplete():
-            print("Tile is complete")
-        else:
-            print("Tile is missing pixel")
 
     def create_first_view(self):
         """Set up the initial layout with grids and palette."""
@@ -111,22 +117,29 @@ class App(tk.Tk):
 
     def create_large_grids(self):
         """Create the 16x8 grids."""
+        global tileMap
         for k in range(3):  # Create 3 grids in rows 0, 1, 2
             large_grid_frame = tk.Frame(self.main_frame, bg="lightcoral")
-            large_grid_frame.grid(row=k, column=0, padx=(10, 20), pady=5)  # More space on right side
+            large_grid_frame.grid(row=k, column=0, padx=(10, 20), pady=5, sticky="nsew")  # Allow it to expand
+            self.main_frame.grid_rowconfigure(k, weight=1)  # Allow rows to expand
+            self.main_frame.grid_columnconfigure(0, weight=1)  # Allow
+            for r in range(8):
+                large_grid_frame.grid_rowconfigure(r, weight=1)  # Allow rows to expand
+            for c in range(16):
+                large_grid_frame.grid_columnconfigure(c, weight=1)  # Allow columns to expand
             for r in range(8):  
                 for c in range(16):
                     # Create the tile graphic (Label widget)
-                    tileGraphic = tk.Label(
-                        large_grid_frame, text=f"{r},{c}", width=2, height=1, relief="solid"
+                    tileGraphic = tk.Canvas(
+                        large_grid_frame, width=1, height=1, bg="white", bd=0
                     )
-                    
+
                     # Bind the event after the tile is created
                     tileGraphic.bind("<Button-1>", lambda event, r=r, c=c,k=k: self.changeTile((r * 16 + c)+(127*k)+(1*k)))
                     
                     # Position the tile in the grid
-                    tileGraphic.grid(row=r, column=c)
-                    
+                    tileGraphic.grid(row=r, column=c, sticky="nsew")
+                    tileMap.append(tileGraphic)
                     # Calculate the index for the 1D array
                     
                     # Create and append the Tile object
@@ -141,15 +154,22 @@ class App(tk.Tk):
 
     def create_small_grid(self):
         """Create the 8x8 grid."""
-        grid_frame = tk.Frame(self.main_frame, bg="lightblue")
-        grid_frame.grid(row=0, column=2, rowspan=3, padx=10, pady=10)
+        global grid_frame
+        grid_frame = tk.Frame(self.main_frame, bg="lightblue")  # Store as self.grid_frame
+        grid_frame.grid(row=0, column=2, rowspan=3, padx=10, pady=10, sticky="nsew")
+        self.main_frame.grid_rowconfigure(0, weight=1)  # Allow rows to expand
+        self.main_frame.grid_columnconfigure(2, weight=1)  # All
+        for r in range(8):
+            grid_frame.grid_rowconfigure(r, weight=1)  # Allow rows to expand
+        for c in range(8):
+            grid_frame.grid_columnconfigure(c, weight=1)  # Allow columns to expand
         global currTile
         global tileSet
         currTile.clear()
         for r in range(8):
             for c in range(8):
-                pixel = tk.Label(grid_frame, text=f"{r},{c}", width=4, height=2, relief="solid", bg="white")
-                pixel.grid(row=r, column=c)
+                pixel = tk.Label(grid_frame, text=f"{r},{c}", relief="solid", bg="white")
+                pixel.grid(row=r, column=c,sticky="nsew")
                 pixel_data = Pixel(pixel, "white")  # Creating an instance of the Pixel class
                 currTile.append(pixel_data)
                 # Capture the correct row (r) and column (c) for each pixel
@@ -158,8 +178,15 @@ class App(tk.Tk):
 
 
     def load_small_grid(self):
-        grid_frame = tk.Frame(self.main_frame, bg="lightblue")
-        grid_frame.grid(row=0, column=2, rowspan=3, padx=10, pady=10)
+        global grid_frame
+        grid_frame = tk.Frame(self.main_frame, bg="lightblue")  # Store as self.grid_frame
+        grid_frame.grid(row=0, column=2, rowspan=3, padx=10, pady=10, sticky="nsew")
+        self.main_frame.grid_rowconfigure(0, weight=1)  # Allow rows to expand
+        self.main_frame.grid_columnconfigure(2, weight=1)  # All
+        for r in range(8):
+            grid_frame.grid_rowconfigure(r, weight=1)  # Allow rows to expand
+        for c in range(8):
+            grid_frame.grid_columnconfigure(c, weight=1)  # Allow columns to expand
         global currTile
         global currTileIndex
         global tileSet
@@ -169,7 +196,7 @@ class App(tk.Tk):
             for c in range(8):
                 index = r * 8 + c
                 pixel = tk.Label(grid_frame, text=f"{r},{c}", width=4, height=2, relief="solid", bg=palette[toLoad.pixels[index]].cget("bg"))
-                pixel.grid(row=r, column=c)
+                pixel.grid(row=r, column=c,sticky="nsew")
                 pixel_data = Pixel(pixel, palette[toLoad.pixels[index]].cget("bg"))
                 pixel_data.paletteNumber= toLoad.pixels[index] # Creating an instance of the Pixel class
                 currTile.append(pixel_data)
@@ -180,12 +207,14 @@ class App(tk.Tk):
     def create_palette(self):
         """Create the 1x4 color palette."""
         row_frame = tk.Frame(self.main_frame, bg="lightgreen")
-        row_frame.grid(row=0, column=3, rowspan=3, padx=10, pady=10)
-
+        row_frame.grid(row=0, column=3, rowspan=3, padx=10, pady=10, sticky="nsew")
+        row_frame.grid_rowconfigure(0, weight=1)  # Make row 0 expand vertically
+        row_frame.grid_columnconfigure(0, weight=1, minsize=100)  # Make colum
         for i in range(4):
-            box = tk.Label(row_frame, width=6, height=2, relief="solid", bg=box_colors[i])
-            box.pack(side="top", pady=2)
+            box = tk.Label(row_frame, relief="solid", bg=box_colors[i])
+            box.grid(row=i, column=0, sticky="nsew", pady=2)  # Use grid() instead of pack()
             palette.append(box)
+            row_frame.grid_rowconfigure(i, weight=1)  # Allow each row to expand vertically
 
             # Bind left and right click events
             box.bind("<Button-1>", lambda event,i=i: self.on_left_click(i))
@@ -218,9 +247,11 @@ class App(tk.Tk):
         widget.config(bg="red")  # Change the background color of the clicked tile
 
     def changeTile(self,index):
-        print(index)
+       # (r * 16 + c)+(127*k)+(1*k)
         global currTileIndex
-
+        print(index)
+        self.capture_grid()
+        self.apply_image_to_tile(currTileIndex)
         tileSet[currTileIndex].setPixelsPaletteNumber(currTile)
         tileSet[currTileIndex].modified=True
         currTileIndex= index
@@ -236,6 +267,57 @@ class App(tk.Tk):
         
         return True
 
+
+    # def draw_circle_on_screen(self, x, y, radius=5):
+    #     dot = tk.Label(self.main_frame, bg="red", width=radius*2, height=radius*2)
+    #     dot.place(x=x - radius, y=y - radius)
+
+
+    def capture_grid(self):
+        global grid_frame
+        """Captures the 8x8 grid as an image."""
+        # Get coordinates of the grid frame
+        self.update_idletasks()  # Ensure layout updates
+    # Get widget position and size
+        x = grid_frame.winfo_rootx()
+        y = grid_frame.winfo_rooty()
+        w = grid_frame.winfo_width()
+        h = grid_frame.winfo_height()
+        self.img = ImageGrab.grab(bbox=(x, y, x + w, y + h),all_screens=True)
+
+        # Resize if needed
+       # img = img.resize((tileMap[0].winfo_width(),tileMap[0].winfo_height()))  # Resize for fitting in a 16x8 tile
+
+        # Convert to Tkinter PhotoImage
+        self.saved_img = ImageTk.PhotoImage(self.img)
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # Save the image in the same directory as the script
+        img_path = os.path.join(script_dir, "captured_grid.png")
+        self.img.save(img_path)
+        print("Grid captured successfully!")
+
+    def apply_image_to_tile(self, index):
+        """Applies the captured grid image as background to a tile in the 16x8 grid."""
+        if not hasattr(self, 'saved_img'):
+            print("No image captured yet!")
+            return
+        global tileMap
+        target_tile = tileMap[index]  # Access the correct tile label
+        canvas_width = target_tile.winfo_width()
+        canvas_height = target_tile.winfo_height()
+        target_tile.delete("all")  # Clears any existing drawing
+        # Resize the image to fit the canvas size dynamically
+        resized_img = self.img.resize((canvas_width, canvas_height), Image.Resampling.LANCZOS)
+        
+        # Convert the resized image to a PhotoImage object for Tkinter
+        tk_resized_img = ImageTk.PhotoImage(resized_img)
+        
+        # Apply the resized image as the background
+        target_tile.create_image(0, 0, image=tk_resized_img, anchor="nw")
+        
+        # Prevent garbage collection by keeping a reference to the resized image
+        target_tile.image = tk_resized_img
 
 if __name__ == "__main__":
     app = App()
