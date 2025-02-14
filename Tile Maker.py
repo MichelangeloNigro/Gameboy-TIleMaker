@@ -37,47 +37,17 @@ class Tile:
     def __init__(self, pixels=None, modified=False):
         """Initialize the Tile with a 2D list of Pixel objects (8x8 grid)."""
         self.modified=modified
-        # If no pixels array is provided, initialize with an 8x8 grid of red pixels
-        # if pixels is None:
-        #     self.pixels = [[Pixel() for _ in range(8)] for _ in range(8)]
-        # Create a new list containing only the paletteNumber of each Pixel
-        # palette_numbers = [pixel.paletteNumber for pixel in pixels]
-        self.pixels = pixels # Use the provided pixels array
+        self.pixels = pixels if pixels is not None else [0] * 64  # Ensure it's always 64 elements
 
     def setPixelsPaletteNumber(self,pixels):
         palette_numbers = [pixel.paletteNumber for pixel in pixels]
         self.pixels = palette_numbers  # Use the provided pixels array
-    def set_pixel_color(self, row, col, color):
-        """Set the color of a specific pixel in the grid."""
-        if 0 <= row < 8 and 0 <= col < 8:
-            self.pixels[row][col].set_color(color)
-        else:
-            print("Invalid pixel coordinates")
-
-    def get_pixel_color(self, row, col):
-        """Get the color of a specific pixel in the grid."""
-        if 0 <= row < 8 and 0 <= col < 8:
-            return self.pixels[row][col].color
-        else:
-            print("Invalid pixel coordinates")
-            return None
-
-
-class Tileset:
-    def __init__(self):
-        pass
-
-
-class Tilemap:
-    def __init__(self):
-        pass
 
 
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Tkinter Grid Layout")
-        self.geometry("900x600")  # Adjust as needed
+        self.title("Gameboy Tile Manager")
         # === Navigation Panel (Left Side) ===
         # Get the primary monitor's height from the monitor list
         primary_monitor = get_monitors()[0]  # Assuming the first monitor is the primary monitor
@@ -85,8 +55,21 @@ class App(tk.Tk):
         # Set the window's height to the primary monitor's height
         self.geometry(f"{int(primary_monitor.width/2)}x{int(primary_monitor.height/2)}")  # width and height based on the primary monitor
 
-        self.nav_frame = tk.Frame(self, width=150, bg="gray")
+        # Create navigation frame
+        self.nav_frame = tk.Frame(self, width=200, bg="gray")
         self.nav_frame.pack(side="left", fill="y")
+        self.nav_frame.pack_propagate(False)  # Prevents the frame from shrinking to fit children
+
+        # Create buttons
+        tile_view_btn = tk.Button(self.nav_frame, text="Tile View",height=20)
+        full_view_btn = tk.Button(self.nav_frame, text="Full View",height=20)
+        tilemap_btn = tk.Button(self.nav_frame, text="Tilemap",height=20)
+
+        # Pack buttons inside the nav frame
+        tile_view_btn.pack(fill="x", pady=5)
+        full_view_btn.pack(fill="x", pady=5)
+        tilemap_btn.pack(fill="x", pady=5)
+
 
         # === Main Content Frame ===
         self.main_frame = tk.Frame(self, bg="white")
@@ -168,7 +151,7 @@ class App(tk.Tk):
         currTile.clear()
         for r in range(8):
             for c in range(8):
-                pixel = tk.Label(grid_frame, text=f"{r},{c}", relief="solid", bg="white")
+                pixel = tk.Canvas(grid_frame, relief="solid", bg="white", width=1, height=1)
                 pixel.grid(row=r, column=c,sticky="nsew")
                 pixel_data = Pixel(pixel, "white")  # Creating an instance of the Pixel class
                 currTile.append(pixel_data)
@@ -195,14 +178,14 @@ class App(tk.Tk):
         for r in range(8):
             for c in range(8):
                 index = r * 8 + c
-                pixel = tk.Label(grid_frame, text=f"{r},{c}", width=4, height=2, relief="solid", bg=palette[toLoad.pixels[index]].cget("bg"))
+                pixel = tk.Canvas(grid_frame, width=1, height=1, relief="solid", bg=palette[toLoad.pixels[index]].cget("bg"))
                 pixel.grid(row=r, column=c,sticky="nsew")
                 pixel_data = Pixel(pixel, palette[toLoad.pixels[index]].cget("bg"))
                 pixel_data.paletteNumber= toLoad.pixels[index] # Creating an instance of the Pixel class
                 currTile.append(pixel_data)
                 # Capture the correct row (r) and column (c) for each pixel
                 pixel.bind("<Button-1>", lambda event, widget=pixel: self.clickTile(widget))
-                pixel.bind("<Button-3>", lambda event, widget=pixel: self.removeTile(widget))
+                #pixel.bind("<Button-3>", lambda event, widget=pixel: self.removeTile(widget))
 
     def create_palette(self):
         """Create the 1x4 color palette."""
@@ -218,7 +201,7 @@ class App(tk.Tk):
 
             # Bind left and right click events
             box.bind("<Button-1>", lambda event,i=i: self.on_left_click(i))
-            box.bind("<Button-3>", lambda event,i=i: self.on_right_click(i))
+            box.bind("<Button-3>", lambda event,i=i: self.on_right_click(event))
 
         
     def on_left_click(self, i):
@@ -226,10 +209,16 @@ class App(tk.Tk):
         global selectedColor
         selectedColor = i # Get the background color of the clicked box
 
-    def on_right_click(self, i):
+    def on_right_click(self, event):
         """Handle right mouse click on a box."""
-        global selectedColor
-        selectedColor = i # Get the background color of the clicked box
+        widget = event.widget  # Get the widget that was clicked
+        current_color = widget.cget("bg")  # Get the current background color
+
+        if current_color in box_colors:  # Ensure the color exists in the list
+            i = box_colors.index(current_color)  # Find its index
+            widget.config(bg=box_colors[(i + 1) % len(box_colors)])  # Set next color
+
+
 
     def clickTile(self, widget):
         """Handle clicking a pixel (8x8 grid)."""
@@ -244,7 +233,7 @@ class App(tk.Tk):
 
     def removeTile(self, widget):
         """Handle right-clicking a pixel (8x8 grid)."""
-        widget.config(bg="red")  # Change the background color of the clicked tile
+        widget.config(bg="white")  # Change the background color of the clicked tile
 
     def changeTile(self,index):
        # (r * 16 + c)+(127*k)+(1*k)
@@ -259,6 +248,8 @@ class App(tk.Tk):
             self.create_small_grid()
         else:
             self.load_small_grid()
+
+        self.createPaletteFile() 
     def checkTileComplete(self):
         """Check if all tiles are filled."""
         for i in range(len(currTile)):  # Use len(currTile) to get the count
@@ -272,7 +263,18 @@ class App(tk.Tk):
     #     dot = tk.Label(self.main_frame, bg="red", width=radius*2, height=radius*2)
     #     dot.place(x=x - radius, y=y - radius)
 
+    def createPaletteFile(self, filename="palette.txt"):
+        with open(filename, "w") as file:
+            for i in range(len(tileSet)):
+                pixels = tileSet[i].pixels  # Get the pixel data for the tile
+                for k in range(0, len(pixels), 8):  # Process 8 pixels at a time
+                    file.write("    dw `")  # Start each row with "dw `"
+                    file.write("".join(str(p) for p in pixels[k:k+8]) + "\n")  # Write 8 characters per row
+            
 
+
+    
+    
     def capture_grid(self):
         global grid_frame
         """Captures the 8x8 grid as an image."""
