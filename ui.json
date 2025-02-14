@@ -1,0 +1,472 @@
+{
+    "attrib": {
+        "attr": {
+            "layout": "place"
+        }, 
+        "layout": {
+            "height": 1615, 
+            "width": 2422, 
+            "x": 79, 
+            "y": 2
+        }, 
+        "name": "tk_1"
+    }, 
+    "children": [
+        {
+            "attrib": {
+                "name": "title"
+            }, 
+            "children": [
+                {
+                    "attrib": {
+                        "value": "Gameboy Tile Maker"
+                    }, 
+                    "type": "arg"
+                }
+            ], 
+            "type": "meth"
+        }, 
+        {
+            "attrib": {
+                "name": "geometry"
+            }, 
+            "children": [
+                {
+                    "attrib": {
+                        "value": "2422x1567+0+0"
+                    }, 
+                    "type": "arg"
+                }
+            ], 
+            "type": "meth"
+        }, 
+        {
+            "attrib": {
+                "major": "8", 
+                "minor": "0", 
+                "name": "version"
+            }, 
+            "type": "meta"
+        }, 
+        {
+            "attrib": {
+                "attr": {
+                    "activeborderwidth": 1, 
+                    "borderwidth": 1, 
+                    "font": "{Segoe UI} 9"
+                }, 
+                "name": "menu_1"
+            }, 
+            "type": "tkinter.Menu"
+        }, 
+        {
+            "attrib": {
+                "attr": {
+                    "layout": "grid"
+                }, 
+                "layout": {
+                    "bordermode": "outside", 
+                    "height": "0", 
+                    "relheight": 0.1, 
+                    "relwidth": 0.95, 
+                    "relx": 0.02, 
+                    "rely": 0.01, 
+                    "width": "0", 
+                    "x": 0, 
+                    "y": 0
+                }, 
+                "name": "frame_6"
+            }, 
+            "children": [
+                {
+                    "attrib": {
+                        "column": "0", 
+                        "weight": "1"
+                    }, 
+                    "type": "grid"
+                }, 
+                {
+                    "attrib": {
+                        "column": "1", 
+                        "weight": "1"
+                    }, 
+                    "type": "grid"
+                }, 
+                {
+                    "attrib": {
+                        "column": "2", 
+                        "weight": "1"
+                    }, 
+                    "type": "grid"
+                }, 
+                {
+                    "attrib": {
+                        "attr": {
+                            "font": "{Segoe UI} 20 {}", 
+                            "text": "Tile Map"
+                        }, 
+                        "layout": {
+                            "column": 0, 
+                            "height": 0, 
+                            "row": 0, 
+                            "sticky": "nesw", 
+                            "width": 0
+                        }, 
+                        "name": "button_4"
+                    }, 
+                    "children": [
+                        {
+                            "attrib": {
+                                "add": "False", 
+                                "handler": "load_Tilemap", 
+                                "sequence": "<Button-1>"
+                            }, 
+                            "type": "event"
+                        }
+                    ], 
+                    "type": "tkinter.Button"
+                }, 
+                {
+                    "attrib": {
+                        "attr": {
+                            "font": "{Segoe UI} 20 {}", 
+                            "text": "Full view"
+                        }, 
+                        "layout": {
+                            "column": 1, 
+                            "height": 0, 
+                            "row": 0, 
+                            "sticky": "nesw", 
+                            "width": 0
+                        }, 
+                        "name": "button_3"
+                    }, 
+                    "children": [
+                        {
+                            "attrib": {
+                                "add": "False", 
+                                "handler": "load_fullview", 
+                                "sequence": "<Button-1>"
+                            }, 
+                            "type": "event"
+                        }
+                    ], 
+                    "type": "tkinter.Button"
+                }, 
+                {
+                    "attrib": {
+                        "attr": {
+                            "font": "{Segoe UI} 20 {}", 
+                            "text": "Tile view"
+                        }, 
+                        "layout": {
+                            "column": 2, 
+                            "height": 0, 
+                            "row": 0, 
+                            "sticky": "nesw", 
+                            "width": 0
+                        }, 
+                        "name": "button_2"
+                    }, 
+                    "children": [
+                        {
+                            "attrib": {
+                                "add": "False", 
+                                "handler": "load_tileview", 
+                                "sequence": "<Button-1>"
+                            }, 
+                            "type": "event"
+                        }
+                    ], 
+                    "type": "tkinter.Button"
+                }
+            ], 
+            "type": "tkinter.Frame"
+        }, 
+        {
+            "attrib": {
+                "attr": {
+                    "layout": "place"
+                }, 
+                "layout": {
+                    "bordermode": "outside", 
+                    "height": "0", 
+                    "relheight": 0.88, 
+                    "relwidth": 0.95, 
+                    "relx": 0.02, 
+                    "rely": 0.1, 
+                    "width": "0", 
+                    "x": 0, 
+                    "y": 0
+                }, 
+                "name": "frame_8"
+            }, 
+            "children": [
+                {
+                    "attrib": {
+                        "attr": {
+                            "background": "#303030", 
+                            "layout": "place"
+                        }, 
+                        "layout": {
+                            "bordermode": "outside", 
+                            "height": "0", 
+                            "relheight": 1.0, 
+                            "relwidth": 0.325, 
+                            "width": "0", 
+                            "x": 0, 
+                            "y": 0
+                        }, 
+                        "name": "frame_5"
+                    }, 
+                    "children": [
+                        {
+                            "attrib": {
+                                "attr": {
+                                    "layout": "place"
+                                }, 
+                                "layout": {
+                                    "bordermode": "outside", 
+                                    "height": "0", 
+                                    "relheight": 0.96, 
+                                    "relwidth": 0.91, 
+                                    "relx": 0.05, 
+                                    "rely": 0.02, 
+                                    "width": "0", 
+                                    "x": 0, 
+                                    "y": 0
+                                }, 
+                                "name": "frame_7"
+                            }, 
+                            "type": "tkinter.Frame"
+                        }
+                    ], 
+                    "type": "tkinter.Frame"
+                }, 
+                {
+                    "attrib": {
+                        "attr": {
+                            "background": "#303030", 
+                            "layout": "place"
+                        }, 
+                        "layout": {
+                            "bordermode": "outside", 
+                            "height": "0", 
+                            "relheight": 1.0, 
+                            "relwidth": 0.68, 
+                            "relx": 0.34, 
+                            "width": "0", 
+                            "x": 0, 
+                            "y": 0
+                        }, 
+                        "name": "frame_1"
+                    }, 
+                    "children": [
+                        {
+                            "attrib": {
+                                "attr": {
+                                    "font": "{Segoe UI} 20 {}", 
+                                    "text": "Tile:"
+                                }, 
+                                "layout": {
+                                    "bordermode": "outside", 
+                                    "height": "0", 
+                                    "relheight": 0.02, 
+                                    "relwidth": 0.05, 
+                                    "relx": 0.02, 
+                                    "rely": 0.02, 
+                                    "width": "0", 
+                                    "x": 0, 
+                                    "y": 0
+                                }, 
+                                "name": "label_1"
+                            }, 
+                            "type": "tkinter.Label"
+                        }, 
+                        {
+                            "attrib": {
+                                "attr": {}, 
+                                "layout": {
+                                    "bordermode": "outside", 
+                                    "height": "0", 
+                                    "relheight": 0.01, 
+                                    "relwidth": 0.85, 
+                                    "relx": 0.1, 
+                                    "rely": 0.023, 
+                                    "width": "0", 
+                                    "x": 0, 
+                                    "y": 0
+                                }, 
+                                "name": "separator_2"
+                            }, 
+                            "type": "tkinter.ttk.Separator"
+                        }, 
+                        {
+                            "attrib": {
+                                "attr": {
+                                    "borderwidth": "9", 
+                                    "layout": "place", 
+                                    "relief": "sunken"
+                                }, 
+                                "layout": {
+                                    "bordermode": "outside", 
+                                    "height": "0", 
+                                    "relheight": 0.7, 
+                                    "relwidth": 0.7, 
+                                    "relx": 0.1, 
+                                    "rely": 0.05, 
+                                    "width": "0", 
+                                    "x": 0, 
+                                    "y": 0
+                                }, 
+                                "name": "frame_2"
+                            }, 
+                            "type": "tkinter.ttk.Frame"
+                        }, 
+                        {
+                            "attrib": {
+                                "attr": {
+                                    "anchor": "nw", 
+                                    "font": "{Segoe UI} 15 {}", 
+                                    "foreground": "#000000", 
+                                    "justify": "left", 
+                                    "relief": "raised", 
+                                    "text": "Tile Index"
+                                }, 
+                                "layout": {
+                                    "bordermode": "outside", 
+                                    "height": "0", 
+                                    "relheight": 0.02, 
+                                    "relwidth": 0.07, 
+                                    "relx": 0.02, 
+                                    "rely": 0.77, 
+                                    "width": "0", 
+                                    "x": 0, 
+                                    "y": 0
+                                }, 
+                                "name": "label_2"
+                            }, 
+                            "type": "tkinter.ttk.Label"
+                        }, 
+                        {
+                            "attrib": {
+                                "attr": {}, 
+                                "layout": {
+                                    "bordermode": "outside", 
+                                    "height": "0", 
+                                    "relheight": 0.01, 
+                                    "relwidth": 0.85, 
+                                    "relx": 0.1, 
+                                    "rely": 0.775, 
+                                    "width": "0", 
+                                    "x": 0, 
+                                    "y": 0
+                                }, 
+                                "name": "separator_3"
+                            }, 
+                            "type": "tkinter.ttk.Separator"
+                        }, 
+                        {
+                            "attrib": {
+                                "attr": {
+                                    "anchor": "center", 
+                                    "font": "{Segoe UI} 55 {}", 
+                                    "text": "0 ($0) @VRAM 00:8000"
+                                }, 
+                                "layout": {
+                                    "bordermode": "outside", 
+                                    "height": "100", 
+                                    "width": "879", 
+                                    "x": 255, 
+                                    "y": 1107
+                                }, 
+                                "name": "label_3"
+                            }, 
+                            "type": "tkinter.ttk.Label"
+                        }, 
+                        {
+                            "attrib": {
+                                "attr": {
+                                    "layout": "place", 
+                                    "relief": "raised"
+                                }, 
+                                "layout": {
+                                    "bordermode": "outside", 
+                                    "height": "226", 
+                                    "width": "217", 
+                                    "x": 1301, 
+                                    "y": 470
+                                }, 
+                                "name": "frame_3"
+                            }, 
+                            "type": "tkinter.ttk.Frame"
+                        }, 
+                        {
+                            "attrib": {
+                                "attr": {
+                                    "font": "{Segoe UI} 50 {}", 
+                                    "text": "Save"
+                                }, 
+                                "layout": {
+                                    "bordermode": "outside", 
+                                    "height": "155", 
+                                    "width": "253", 
+                                    "x": 1280, 
+                                    "y": 1175
+                                }, 
+                                "name": "button_6"
+                            }, 
+                            "type": "tkinter.Button"
+                        }
+                    ], 
+                    "type": "tkinter.Frame"
+                }
+            ], 
+            "type": "tkinter.Frame"
+        }, 
+        {
+            "attrib": {
+                "attr": {
+                    "layout": "place"
+                }, 
+                "layout": {
+                    "bordermode": "outside", 
+                    "height": "0", 
+                    "relheight": 0.8, 
+                    "relwidth": 0.95, 
+                    "relx": 0.02, 
+                    "rely": 0.12, 
+                    "width": "0", 
+                    "x": 10000, 
+                    "y": 10000
+                }, 
+                "name": "frame_12"
+            }, 
+            "children": [
+                {
+                    "attrib": {
+                        "attr": {
+                            "background": "#3a3a3a", 
+                            "layout": "place"
+                        }, 
+                        "layout": {
+                            "bordermode": "outside", 
+                            "height": "0", 
+                            "relheight": 0.1, 
+                            "relwidth": 0.1, 
+                            "relx": 0.2, 
+                            "rely": 0.2, 
+                            "width": "0", 
+                            "x": 0, 
+                            "y": 0
+                        }, 
+                        "name": "frame_13"
+                    }, 
+                    "type": "tkinter.Frame"
+                }
+            ], 
+            "type": "tkinter.Frame"
+        }
+    ], 
+    "type": "tkinter.Tk"
+}

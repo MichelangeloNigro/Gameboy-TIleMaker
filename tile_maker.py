@@ -48,8 +48,12 @@ class App(tk.Tk):
 
    
         
-    def on_left_click(self, i):
+    def on_left_click(self, i, event):
         """Handle left mouse click on a box."""
+        for a in constant.palette:
+            a.config(highlightbackground="white", highlightthickness=0)
+        widget = event.widget
+        widget.config(highlightbackground="red", highlightthickness=2)
         constant.selectedColor = i # Get the background color of the clicked box
 
     def on_right_click(self, event):
@@ -60,7 +64,10 @@ class App(tk.Tk):
         if current_color in constant.box_colors:  # Ensure the color exists in the list
             i = constant.box_colors.index(current_color)  # Find its index
             widget.config(bg=constant.box_colors[(i + 1) % len(constant.box_colors)])  # Set next color
-
+            constant.tileSet[constant.currTileIndex].setPixelsPaletteNumber(constant.currTile)
+            for i in range(len(constant.tileSet)):
+                if constant.tileSet[i].modified == True:
+                    self.reloadTile(i)
 
 
     def clickTile(self, widget):
@@ -86,13 +93,22 @@ class App(tk.Tk):
         constant.tileSet[constant.currTileIndex].setPixelsPaletteNumber(constant.currTile)
         constant.tileSet[constant.currTileIndex].modified=True
         constant.currTileIndex= index
+        constant.tileSet[constant.currTileIndex].modified=True
         if constant.tileSet[index].modified == False:
             create_small_grid(self)
         else:
-            load_small_grid(self)
+            load_small_grid(self, constant.currTileIndex)
 
         #createPaletteFile() 
-    
+    def reloadTile(self,index):
+       # (r * 16 + c)+(127*k)+(1*k)
+        print(index)
+        load_small_grid(self, index)
+        constant.tileSet[index].setPixelsPaletteNumber(constant.currTile)
+        capture_grid(self, constant.grid_frame)
+        apply_image_to_tile(self,index)
+        
+
 if __name__ == "__main__":
     app = App()
     app.mainloop()

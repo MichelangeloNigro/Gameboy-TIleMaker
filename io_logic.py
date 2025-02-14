@@ -2,7 +2,7 @@ from PIL import ImageGrab, Image, ImageTk
 import os
 import time
 import constant
-
+from tkinter import messagebox
 def checkTileComplete():
     """Check if all tiles are filled."""
     for i in range(len(constant.currTile)):  # Use len(currTile) to get the count
@@ -21,10 +21,10 @@ def createPaletteFile(filename="palette.txt"):
     time.sleep(1)  # Give some time for data to be populated
     
     filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), "palette.txt")
-    print(filename)
+    messagebox.showinfo("Save path","File saved in path: "+filename)
     with open(filename, "w") as file:
-        for i in range(len(tileSet)):
-            pixels = tileSet[i].pixels  # Get the pixel data for the tile
+        for i in range(len(constant.tileSet)):
+            pixels = constant.tileSet[i].pixels  # Get the pixel data for the tile
             for k in range(0, len(pixels), 8):  # Process 8 pixels at a time
                 file.write("    dw `")  # Start each row with "dw `"
                 file.write("".join(str(p) for p in pixels[k:k+8]) + "\n")  # Write 8 characters per row
@@ -36,7 +36,7 @@ def createPaletteFile(filename="palette.txt"):
 def capture_grid(self, grid_frame):
     """Captures the 8x8 grid as an image."""
     # Get coordinates of the grid frame
-    self.update_idletasks()  # Ensure layout updates
+    self.tk_1.update_idletasks()  # Ensure layout updates
 # Get widget position and size
     x = grid_frame.winfo_rootx()
     y = grid_frame.winfo_rooty()
