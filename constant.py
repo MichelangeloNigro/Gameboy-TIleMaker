@@ -6,3 +6,5 @@ tileMap=[]
 currTileIndex=0
 grid_frame=None
 selectedColor = 0  # Default selected color
+editingTile=True
+tileMapReal=[]

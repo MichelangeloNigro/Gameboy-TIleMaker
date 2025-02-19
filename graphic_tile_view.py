@@ -43,7 +43,7 @@ def create_large_grids(self):
             for c in range(16):
                 # Create the tile graphic (Label widget)
                 tileGraphic = tk.Canvas(
-                    large_grid_frame, width=1, height=1, bg="white", bd=0
+                    large_grid_frame, width=1, height=1, bg="white", bd=0, highlightthickness=1
                 )
 
                 # Bind the event after the tile is created
@@ -86,7 +86,7 @@ def create_small_grid(self):
         for c in range(8):
             constant.grid_frame.grid_columnconfigure(c, weight=1)
             
-            pixel = tk.Canvas(constant.grid_frame, relief="solid", bg="white", width=1, height=1,highlightthickness=1)
+            pixel = tk.Canvas(constant.grid_frame, relief="solid", bg="white", width=1, height=1,highlightthickness=0)
             pixel.grid(row=r, column=c, sticky="nsew")  # Stretch to fill
             pixel_data = Pixel(pixel, "white")  # Creating an instance of the Pixel class
             constant.currTile.append(pixel_data)
@@ -112,7 +112,7 @@ def load_small_grid(self, i):
     for r in range(8):
         for c in range(8):
             index = r * 8 + c
-            pixel = tk.Canvas(constant.grid_frame, width=1, height=1, relief="solid", bg=constant.palette[toLoad.pixels[index]].cget("bg"),highlightthickness=1)
+            pixel = tk.Canvas(constant.grid_frame, width=1, height=1, relief="solid", bg=constant.palette[toLoad.pixels[index]].cget("bg"),highlightthickness=0)
             pixel.grid(row=r, column=c,sticky="nsew")
             pixel_data = Pixel(pixel, constant.palette[toLoad.pixels[index]].cget("bg"))
             pixel_data.paletteNumber= toLoad.pixels[index] # Creating an instance of the Pixel class
@@ -196,22 +196,31 @@ def removeTile( widget):
 
 def changeTile(self,index):
     # (r * 16 + c)+(127*k)+(1*k)
-    print(index)
-    capture_grid(self, constant.grid_frame)
-    apply_image_to_tile(self,constant.currTileIndex)
-    constant.tileSet[constant.currTileIndex].setPixelsPaletteNumber(constant.currTile)
-    constant.tileSet[constant.currTileIndex].modified=True
-    constant.currTileIndex= index
-    constant.tileSet[constant.currTileIndex].modified=True
     if index<256:
-        self.label_3.config(text=f"{index} (${hex(index)[2:]}) @VRAM 00:8{index:02x}0")
+            self.tile_index.config(text=f"Tile Index:        {index} (${hex(index)[2:]}) @VRAM 00:8{index:02x}0")
     else:
-        self.label_3.config(text=f"{index%256} (${hex(index%256)[2:]}) @VRAM 00:9{index%256:02x}0")
-    if constant.tileSet[index].modified == False:
-        create_small_grid(self)
-    else:
-        load_small_grid(self, constant.currTileIndex)
-
+            self.tile_index.config(text=f"Tile Index:        {index%256} (${hex(index%256)[2:]}) @VRAM 00:9{index%256:02x}0")
+    if(constant.editingTile):
+        print(index)
+        capture_grid(self, constant.grid_frame)
+        apply_image_to_tile(self,constant.currTileIndex)
+        constant.tileSet[constant.currTileIndex].setPixelsPaletteNumber(constant.currTile)
+        constant.tileSet[constant.currTileIndex].modified=True
+        constant.currTileIndex= index
+        constant.tileSet[constant.currTileIndex].modified=True
+        if index<256:
+            self.label_3.config(text=f"{index} (${hex(index)[2:]}) @VRAM 00:8{index:02x}0")
+            self.tile_index.config(text=f"{index} (${hex(index)[2:]}) @VRAM 00:8{index:02x}0")
+            constant.tileSet[constant.currTileIndex].hex=hex(index)[2:]
+        else:
+            self.label_3.config(text=f"{index%256} (${hex(index%256)[2:]}) @VRAM 00:9{index%256:02x}0")
+            self.tile_index.config(text=f"{index%256} (${hex(index%256)[2:]}) @VRAM 00:9{index%256:02x}0")
+            constant.tileSet[constant.currTileIndex].hex=hex(index%256)[2:]
+        if constant.tileSet[index].modified == False:
+            create_small_grid(self)
+        else:
+            load_small_grid(self, constant.currTileIndex)
+    constant.currTileIndex= index
     #createPaletteFile() 
 def reloadTile(self,index):
     # (r * 16 + c)+(127*k)+(1*k)

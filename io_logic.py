@@ -16,11 +16,11 @@ def checkTileComplete():
 #     dot = tk.Label(self.main_frame, bg="red", width=radius*2, height=radius*2)
 #     dot.place(x=x - radius, y=y - radius)
 
-def createPaletteFile(filename="palette.txt"):
+def createPaletteFile(filename="Tiles.txt"):
     global tileSet
     time.sleep(1)  # Give some time for data to be populated
     
-    filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), "palette.txt")
+    filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Tiles.txt")
     messagebox.showinfo("Save path","File saved in path: "+filename)
     with open(filename, "w") as file:
         for i in range(len(constant.tileSet)):
@@ -31,7 +31,16 @@ def createPaletteFile(filename="palette.txt"):
         
 
 
-
+def createTilemapFile(event, filename="tileMap.txt"):
+    time.sleep(1)  # Give some time for data to be populated
+    filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tileMap.txt")
+    messagebox.showinfo("Save path","File saved in path: "+filename)
+    with open(filename, "w") as file:
+        for i in range(len(constant.tileMapReal)):
+            file.write("    db ")
+            for k in range(20):
+                file.write(f"${constant.tileMapReal[i].hex:02x}, ")
+            file.write("0,0,0,0,0,0,0,0,0,0,0,0\n")
 
 def capture_grid(self, grid_frame):
     """Captures the 8x8 grid as an image."""
@@ -70,7 +79,8 @@ def apply_image_to_tile(self, index):
     
     # Convert the resized image to a PhotoImage object for Tkinter
     tk_resized_img = ImageTk.PhotoImage(resized_img)
-    
+    constant.tileSet[constant.currTileIndex].img=self.img
+
     # Apply the resized image as the background
     target_tile.create_image(0, 0, image=tk_resized_img, anchor="nw")
     

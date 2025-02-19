@@ -375,10 +375,14 @@
                                 }, 
                                 "layout": {
                                     "bordermode": "outside", 
-                                    "height": "100", 
-                                    "width": "879", 
-                                    "x": 255, 
-                                    "y": 1107
+                                    "height": "0", 
+                                    "relheight": 0.1, 
+                                    "relwidth": 0.6, 
+                                    "relx": 0.1, 
+                                    "rely": 0.8, 
+                                    "width": "0", 
+                                    "x": 0, 
+                                    "y": 0
                                 }, 
                                 "name": "label_3"
                             }, 
@@ -392,10 +396,14 @@
                                 }, 
                                 "layout": {
                                     "bordermode": "outside", 
-                                    "height": "226", 
-                                    "width": "217", 
-                                    "x": 1301, 
-                                    "y": 470
+                                    "height": "0", 
+                                    "relheight": 0.14, 
+                                    "relwidth": 0.14, 
+                                    "relx": 0.81, 
+                                    "rely": 0.35, 
+                                    "width": "0", 
+                                    "x": 0, 
+                                    "y": 0
                                 }, 
                                 "name": "frame_3"
                             }, 
@@ -409,10 +417,14 @@
                                 }, 
                                 "layout": {
                                     "bordermode": "outside", 
-                                    "height": "155", 
-                                    "width": "253", 
-                                    "x": 1280, 
-                                    "y": 1175
+                                    "height": "0", 
+                                    "relheight": 0.1, 
+                                    "relwidth": 0.2, 
+                                    "relx": 0.75, 
+                                    "rely": 0.85, 
+                                    "width": "0", 
+                                    "x": 0, 
+                                    "y": 0
                                 }, 
                                 "name": "button_6"
                             }, 
@@ -427,20 +439,21 @@
         {
             "attrib": {
                 "attr": {
+                    "background": "#303030", 
                     "layout": "place"
                 }, 
                 "layout": {
                     "bordermode": "outside", 
                     "height": "0", 
-                    "relheight": 0.8, 
-                    "relwidth": 0.95, 
-                    "relx": 0.02, 
-                    "rely": 0.12, 
+                    "relheight": 0.88, 
+                    "relwidth": 0.65, 
+                    "relx": 0.34, 
+                    "rely": 0.1, 
                     "width": "0", 
                     "x": 10000, 
-                    "y": 10000
+                    "y": 0
                 }, 
-                "name": "frame_12"
+                "name": "tilmeapPage"
             }, 
             "children": [
                 {
@@ -452,16 +465,132 @@
                         "layout": {
                             "bordermode": "outside", 
                             "height": "0", 
-                            "relheight": 0.1, 
-                            "relwidth": 0.1, 
-                            "relx": 0.2, 
-                            "rely": 0.2, 
+                            "relheight": 0.97, 
+                            "relwidth": 0.97, 
+                            "relx": 0.015, 
+                            "rely": 0.015, 
                             "width": "0", 
                             "x": 0, 
                             "y": 0
                         }, 
-                        "name": "frame_13"
+                        "name": "tilemap"
                     }, 
+                    "children": [
+                        {
+                            "attrib": {
+                                "attr": {
+                                    "layout": "place"
+                                }, 
+                                "layout": {
+                                    "bordermode": "outside", 
+                                    "height": "25", 
+                                    "relheight": 0.7, 
+                                    "relwidth": 1.0, 
+                                    "width": "0", 
+                                    "x": 0, 
+                                    "y": 0
+                                }, 
+                                "name": "tilemapView"
+                            }, 
+                            "type": "tkinter.Frame"
+                        }, 
+                        {
+                            "attrib": {
+                                "attr": {
+                                    "layout": "place"
+                                }, 
+                                "layout": {
+                                    "bordermode": "outside", 
+                                    "height": "0", 
+                                    "relheight": 0.2, 
+                                    "relwidth": 1.0, 
+                                    "rely": 0.8, 
+                                    "width": "0", 
+                                    "x": 0, 
+                                    "y": 0
+                                }, 
+                                "name": "tilemapInfo"
+                            }, 
+                            "children": [
+                                {
+                                    "attrib": {
+                                        "attr": {
+                                            "anchor": "w", 
+                                            "background": "#3a3a3a", 
+                                            "font": "{Segoe UI} 30 {}", 
+                                            "text": "label_4"
+                                        }, 
+                                        "layout": {
+                                            "bordermode": "outside", 
+                                            "height": "25", 
+                                            "relheight": 0.2, 
+                                            "relwidth": 0.8, 
+                                            "relx": 0.03, 
+                                            "rely": 0.1, 
+                                            "width": "0", 
+                                            "x": 0, 
+                                            "y": 0
+                                        }, 
+                                        "name": "index"
+                                    }, 
+                                    "type": "tkinter.Label"
+                                }, 
+                                {
+                                    "attrib": {
+                                        "attr": {
+                                            "anchor": "w", 
+                                            "font": "{Segoe UI} 30 {}", 
+                                            "text": "label_5"
+                                        }, 
+                                        "layout": {
+                                            "bordermode": "outside", 
+                                            "height": "25", 
+                                            "relheight": 0.2, 
+                                            "relwidth": 0.8, 
+                                            "relx": 0.03, 
+                                            "rely": 0.6, 
+                                            "width": "0", 
+                                            "x": 0, 
+                                            "y": 0
+                                        }, 
+                                        "name": "tile_index"
+                                    }, 
+                                    "type": "tkinter.Label"
+                                }, 
+                                {
+                                    "attrib": {
+                                        "attr": {
+                                            "text": "Save Tilemap"
+                                        }, 
+                                        "layout": {
+                                            "bordermode": "outside", 
+                                            "height": "0", 
+                                            "relheight": 0.4, 
+                                            "relwidth": 0.1, 
+                                            "relx": 0.87, 
+                                            "rely": 0.3, 
+                                            "width": "0", 
+                                            "x": 0, 
+                                            "y": 0
+                                        }, 
+                                        "name": "button_1"
+                                    }, 
+                                    "children": [
+                                        {
+                                            "attrib": {
+                                                "add": "False", 
+                                                "handler": "createTilemapFile", 
+                                                "sequence": "<Button-1>"
+                                            }, 
+                                            "type": "event"
+                                        }
+                                    ], 
+                                    "type": "tkinter.Button"
+                                }
+                            ], 
+                            "type": "tkinter.Frame"
+                        }
+                    ], 
                     "type": "tkinter.Frame"
                 }
             ], 
