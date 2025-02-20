@@ -258,7 +258,7 @@
                     "relx": 0.02, 
                     "rely": 0.1, 
                     "width": "0", 
-                    "x": 0, 
+                    "x": 10000, 
                     "y": 0
                 }, 
                 "name": "frame_8"
@@ -653,6 +653,68 @@
                             "type": "tkinter.Frame"
                         }
                     ], 
+                    "type": "tkinter.Frame"
+                }
+            ], 
+            "type": "tkinter.Frame"
+        }, 
+        {
+            "attrib": {
+                "attr": {
+                    "background": "#3a3a3a", 
+                    "layout": "place"
+                }, 
+                "layout": {
+                    "bordermode": "outside", 
+                    "height": "0", 
+                    "relheight": 0.9, 
+                    "relwidth": 1.0, 
+                    "rely": 0.1, 
+                    "width": "0", 
+                    "x": 0, 
+                    "y": 0
+                }, 
+                "name": "FullviewPage"
+            }, 
+            "children": [
+                {
+                    "attrib": {
+                        "attr": {
+                            "background": "#0078d7"
+                        }, 
+                        "layout": {
+                            "bordermode": "outside", 
+                            "height": "0", 
+                            "relheight": 0.98, 
+                            "relwidth": 0.8, 
+                            "relx": 0.01, 
+                            "rely": 0.01, 
+                            "width": "0", 
+                            "x": 0, 
+                            "y": 0
+                        }, 
+                        "name": "fullviewCanvas"
+                    }, 
+                    "type": "tkinter.Canvas"
+                }, 
+                {
+                    "attrib": {
+                        "attr": {
+                            "layout": "place"
+                        }, 
+                        "layout": {
+                            "bordermode": "outside", 
+                            "height": "0", 
+                            "relheight": 0.98, 
+                            "relwidth": 0.175, 
+                            "relx": 0.82, 
+                            "rely": 0.01, 
+                            "width": "0", 
+                            "x": 0, 
+                            "y": 0
+                        }, 
+                        "name": "frame_10"
+                    }, 
                     "type": "tkinter.Frame"
                 }
             ], 

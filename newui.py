@@ -9,6 +9,7 @@ from graphic_tile_view import *
 from formation import AppBuilder
 from screeninfo import get_monitors
 from tilemapLogic import *
+from fullview import *
 constant.app = AppBuilder(path="ui.json")
 
 # Get the primary monitor's height from the monitor list
@@ -34,16 +35,27 @@ def load_Tilemap(event):
     constant.app.frame_1.place(x=1000,y=8700)
     constant.app.frame_8.place(x=0,y=0)
     constant.app.tilmeapPage.place(x=0,y=0)
+    constant.app.FullviewPage.place(x=10000,y=0)
+    
 def load_fullview(event):
-    constant.app.frame_8.place(x=1000,y=8700)
+    constant.app.frame_8.place(x=10000,y=0)
+    constant.app.FullviewPage.place(x=0,y=0)
+    redraw()
 def load_tileview(event):
     constant.editingTile=True
     constant.app.frame_8.place(x=0,y=0)
     constant.app.frame_1.place(x=0,y=0)
+    constant.app.FullviewPage.place(x=10000,y=0)
     constant.app.tilmeapPage.place(x=10000,y=10000)
+    for i in range(len(constant.tileSet)):
+            if constant.tileSet[i].modified == True:
+                constant.currTileIndex=i
+                reloadTile(constant.app,i)
 create_first_view(constant.app)
 createTilemap(constant.app)
+createfullview(constant.app)
 constant.app.connect_callbacks(globals()) # clicking the button will trigger the on_click function
 constant.app.tk_1.bind("<B1-Motion>", dragTile)
 constant.app.button_6.bind("<Button-1>",createPaletteFile)
+
 constant.app.mainloop()
