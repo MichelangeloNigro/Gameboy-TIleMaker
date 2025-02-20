@@ -8,3 +8,5 @@ grid_frame=None
 selectedColor = 0  # Default selected color
 editingTile=True
 tileMapReal=[]
+tileMapRealGraphic=[]
+app=None

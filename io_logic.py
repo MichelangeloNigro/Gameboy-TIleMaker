@@ -3,6 +3,9 @@ import os
 import time
 import constant
 from tkinter import messagebox
+from tkinter import Tk, filedialog
+
+#from graphic_tile_view import reloadTile
 def checkTileComplete():
     """Check if all tiles are filled."""
     for i in range(len(constant.currTile)):  # Use len(currTile) to get the count
@@ -36,11 +39,12 @@ def createTilemapFile(event, filename="tileMap.txt"):
     filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tileMap.txt")
     messagebox.showinfo("Save path","File saved in path: "+filename)
     with open(filename, "w") as file:
-        for i in range(len(constant.tileMapReal)):
+        for i in range(0, len(constant.tileMapReal), 20):
             file.write("    db ")
-            for k in range(20):
-                file.write(f"${constant.tileMapReal[i].hex:02x}, ")
-            file.write("0,0,0,0,0,0,0,0,0,0,0,0\n")
+            chunk = constant.tileMapReal[i:i+20]  # Get a slice of up to 20 elements
+            file.write(", ".join(f"${tile.hex.zfill(2)}" for tile in chunk))  # Ensure two-digit hex
+            file.write(", 0,0,0,0,0,0,0,0,0,0,0,0\n")
+
 
 def capture_grid(self, grid_frame):
     """Captures the 8x8 grid as an image."""
@@ -86,3 +90,69 @@ def apply_image_to_tile(self, index):
     
     # Prevent garbage collection by keeping a reference to the resized image
     target_tile.image = tk_resized_img
+
+def loadPaletteIO():  
+    root = Tk()
+    root.withdraw()  # Hide the root window
+    path = filedialog.askopenfilename(title="Select Tiles File", filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+    root.destroy()
+    with open(path, "r") as file:
+        lines = file.readlines()  # Read all lines
+
+    tile_index = 0
+    pixels = []  # Temporary list to hold pixel data
+
+    for line in lines:
+        line = line.strip()
+        if not line.startswith("dw `"):  
+            continue  # Skip lines that don't start with "dw `"
+        if line.startswith("dw `"):  # Ensure it's a valid tile row
+            pixel_data = line[4:]  # Extract the pixel values after "dw `"
+            pixels.extend(int(p) for p in pixel_data)  # Convert characters to integers
+
+            if len(pixels) == 64:  # Each tile has 8x8 = 64 pixels
+                constant.tileSet[tile_index].pixels = pixels  # Assign to the tile
+                constant.tileSet[tile_index].modified = True  # Assign to the tile
+                #reloadTile(constant.app,tile_index)
+                tile_index += 1  # Move to the next tile
+                pixels = []  # Reset for the next tile
+
+    # Handle any extra data (optional)
+    if pixels:
+        print(f"Warning: Incomplete tile data found ({len(pixels)} pixels)")
+
+
+
+def loadTilemapFileIO():
+    # Open file explorer for user to select a tilemap file
+    filename = filedialog.askopenfilename(title="Select Tilemap File", filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+
+    if not filename:  # If the user cancels, exit function
+        print("No file selected.")
+        return
+
+    with open(filename, "r") as file:
+        lines = file.readlines()  # Read all lines
+
+
+    tile_index = 0  # Track where we are in constant.tileMapReal
+
+    for line in lines:
+        line = line.strip()
+
+        if not line.startswith("db "):  # Ignore non-data lines
+            continue
+
+        hex_values = line[3:].split(",")  # Remove "db " and split values
+
+        for hex_value in hex_values:
+            hex_value = hex_value.strip()  # Remove extra spaces
+            if hex_value.startswith("$"):  # Ensure it's a hex number
+                if tile_index < len(constant.tileMapReal):  # Prevent index out of range
+                    constant.tileMapReal[tile_index].tile = int(hex_value[1:], 16)  # Convert to int
+                tile_index += 1  # Move to next tile
+
+
+
+    print(f"Successfully loaded {len(constant.tileMapReal)} tiles from {filename}.")
+    messagebox.showinfo("Load Complete", f"Tilemap loaded from: {filename}")

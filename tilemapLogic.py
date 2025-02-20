@@ -17,15 +17,18 @@ def createTilemap(app):
                     
                     # Position the tile in the grid
                     tileGraphic.grid(row=r, column=c, sticky="nsew")
-                    tileGraphic.bind("<Button-1>", lambda event: drawTileMapTile(app,event))
+                    tileGraphic.bind("<Button-1>", lambda event: drawTileMapTile(app,event.widget))
+                    constant.tileMapRealGraphic.append(tileGraphic)
                     constant.tileMapReal.append(tilemapTile(tileGraphic,None,None,r,c))
 
 
 
-def drawTileMapTile(app,event):
-    button = event.widget
+def drawTileMapTile(app,button):
     tilemaprealElement = next((t for t in constant.tileMapReal if t.button == button), None)
     img=constant.tileSet[constant.currTileIndex].img
+    # Check if the image is missing or None
+    
+
     canvas_width = button.winfo_width()
     canvas_height = button.winfo_height()
     button.delete("all")  # Clears any existing drawing

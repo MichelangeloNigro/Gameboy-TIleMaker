@@ -101,6 +101,12 @@
                 }, 
                 {
                     "attrib": {
+                        "column": "3"
+                    }, 
+                    "type": "grid"
+                }, 
+                {
+                    "attrib": {
                         "attr": {
                             "font": "{Segoe UI} 20 {}", 
                             "text": "Tile Map"
@@ -179,6 +185,62 @@
                         }
                     ], 
                     "type": "tkinter.Button"
+                }, 
+                {
+                    "attrib": {
+                        "attr": {
+                            "menu": "option", 
+                            "padx": 11, 
+                            "pady": 8, 
+                            "text": "Option"
+                        }, 
+                        "layout": {
+                            "column": 3, 
+                            "height": "0", 
+                            "row": 0, 
+                            "sticky": "nesw", 
+                            "width": "0"
+                        }, 
+                        "name": "menubutton_2"
+                    }, 
+                    "children": [
+                        {
+                            "attrib": {
+                                "attr": {
+                                    "activeborderwidth": 1, 
+                                    "borderwidth": 1, 
+                                    "font": "{Segoe UI} 9"
+                                }, 
+                                "name": "option"
+                            }, 
+                            "children": [
+                                {
+                                    "attrib": {
+                                        "menu": {
+                                            "command": "loadPalette", 
+                                            "compound": "none", 
+                                            "label": "Load tileset", 
+                                            "state": "normal"
+                                        }
+                                    }, 
+                                    "type": "command"
+                                }, 
+                                {
+                                    "attrib": {
+                                        "menu": {
+                                            "command": "loadTilemapFile", 
+                                            "compound": "none", 
+                                            "label": "Load tilemap", 
+                                            "state": "normal"
+                                        }
+                                    }, 
+                                    "type": "command"
+                                }
+                            ], 
+                            "type": "tkinter.Menu"
+                        }
+                    ], 
+                    "type": "tkinter.Menubutton"
                 }
             ], 
             "type": "tkinter.Frame"
