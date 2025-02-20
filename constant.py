@@ -1,4 +1,7 @@
 box_colors = ["#FEFEFE", "#C0C0C0", "#404040", "#000000"]  # white, light grey, grey, black
+colorsBit=["11","10","01","00"]
+color_map = {bit: color for bit, color in zip(colorsBit, box_colors)}
+reverse_color_map = {color: bit for bit, color in color_map.items()}
 palette = []
 currTile = []
 tileSet= []

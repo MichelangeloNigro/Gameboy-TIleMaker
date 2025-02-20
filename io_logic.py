@@ -31,7 +31,12 @@ def createPaletteFile(filename="Tiles.txt"):
             for k in range(0, len(pixels), 8):  # Process 8 pixels at a time
                 file.write("    dw `")  # Start each row with "dw `"
                 file.write("".join(str(p) for p in pixels[k:k+8]) + "\n")  # Write 8 characters per row
-        
+        #ld a, %11100100
+        #ld [rBGP], a
+        palettebit=""
+        for clr in constant.palette:
+            palettebit+=constant.reverse_color_map[clr.cget("bg")] 
+        file.write(f";this is the palette used\n;ld a, %{palettebit}\n;ld [rBGP], a")
 
 
 def createTilemapFile(event, filename="tileMap.txt"):
